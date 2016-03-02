@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration scan="true" scanPeriod="60 seconds" debug="false">
+	<!-- Define log variable -->
+	<property name="LOG_HOME" value="/seed_project/log" />
+	<property name="ROOT_LOG_NAME" value="seed_project" />
+	<property name="ACCESS_LOG_NAME" value="access" />
+	
+	
+	<!-- Standard output -->
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<pattern>[%-5level][%logger{0}] - %msg%n</pattern>
+		</encoder>
+	</appender>
+		
+	<!-- File output -->
+	<appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${LOG_HOME}/${ROOT_LOG_NAME}.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            	<!-- daily rollover -->
+			<fileNamePattern>${LOG_HOME}/${ROOT_LOG_NAME}.%d{yyyy-MM-dd}.log
+			</fileNamePattern>
+            	<!-- keep 30 days' worth of history -->
+			<maxHistory>30</maxHistory>
+		</rollingPolicy>
+		<triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+			<MaxFileSize>100MB</MaxFileSize>
+		</triggeringPolicy>
+		<encoder>
+			<pattern>%d [%-5level][%thread][%logger{0}] - %msg%n</pattern>
+		</encoder>
+	</appender>
+	
+	<!-- Http request output -->
+	<appender name="ACCESS" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${LOG_HOME}/${ACCESS_LOG_NAME}.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            	<!-- daily rollover -->
+			<fileNamePattern>${LOG_HOME}/${ACCESS_LOG_NAME}.%d{yyyy-MM-dd}.log
+			</fileNamePattern>
+            	<!-- keep 30 days' worth of history -->
+			<maxHistory>30</maxHistory>
+		</rollingPolicy>
+		<triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+			<MaxFileSize>100MB</MaxFileSize>
+		</triggeringPolicy>
+		<encoder>
+			<pattern>%d [%t] - %msg%n</pattern>
+		</encoder>
+	</appender>
+
+	<!-- Http request logger -->
+	<logger name="carl.royal.an.interceptor.HttpRequestLoggerInterceptor" level="DEBUG" additivity="false">
+		<appender-ref ref="ACCESS" />
+		<appender-ref ref="STDOUT" />
+	</logger>
+
+	<logger name="com" level="DEBUG">
+		<appender-ref ref="STDOUT" />
+	</logger>
+
+	<root level="INFO">
+		<appender-ref ref="FILE" />
+	</root>
+
+</configuration>

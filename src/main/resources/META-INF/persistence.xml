@@ -1,0 +1,17 @@
+<persistence version="2.0"
+	xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence
+                        http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
+	<persistence-unit name="seedprojectPg">
+		<!-- The jndi name of datasource on JBoss EAP -->
+		<jta-data-source>java:jboss/datasources/seedprojectPgDS</jta-data-source>
+		<properties>
+			<!-- Bind entity manager factory to JNDI at java:jboss/entityManagerFactorys/seedprojectPg -->
+			<property name="jboss.entity.manager.factory.jndi.name"
+				value="java:jboss/entityManagerFactorys/seedprojectPg" />
+			<!-- Properties for Hibernate -->
+			<property name="hibernate.show_sql" value="true" />
+			<property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect" />
+		</properties>
+	</persistence-unit>
+</persistence>
